@@ -16,4 +16,5 @@ possible issues
 - you do not have docker installed. If yes, please install docker
 - your port 8080 is already in use. If that is the case, do this --> sudo docker run -p 80:8080 videa and go to localhost:80
 - make sure you are making a http request and not https request
+- make sure you are in Videa directory after git clone before you run docker build
 
