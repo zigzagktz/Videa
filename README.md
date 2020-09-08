@@ -7,9 +7,11 @@ Below are the instruction to build docker image and to run the container.
 
 3. > sudo docker build -t 'videa' .
 
-4. > sudo docker run -p 8080:8080 videa
+4. > sudo docker run -d -p 8080:8080 videa
 
 5. > go to localhost:8080, localhost:8080/films, localhost:8080/characters 
+
+6. > Or do curl localhost:8080, localhost:8080/films, localhost:8080/characters 
 
 possible issues 
 - if you are runnning docker on windows, then I would recommend running this docker on Linux system. Becuase windows have firewall and port forwarding issues due to the docker running inside a virtual machine under the hood. 
