@@ -30,7 +30,7 @@ def first():
     cur = conn.cursor()
     counter_one += 1
     if counter_one == 1:
-        cur.execute('drop table films')
+        cur.execute('drop table if exists films')
         cur.execute('CREATE TABLE IF NOT EXISTS films ( data json)')
         for i in backend.film_names():
             cur.execute('insert into films values ( ?)',[json.dumps(i)])
@@ -54,7 +54,7 @@ def second():
     conn = sqlite3.connect('starwars.db')
     cur = conn.cursor()
     if counter_two == 1:
-        cur.execute('drop table characters')
+        cur.execute('drop table if exists characters')
         cur.execute('CREATE TABLE IF NOT EXISTS characters ( data json)')
         for i in backend.join():
             cur.execute('insert into characters values ( ?)',[json.dumps(i)])
