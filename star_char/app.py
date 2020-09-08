@@ -63,7 +63,7 @@ def second():
         return rows
 
 if __name__ == "__main__":
-    app.run( debug=True)
+    app.run( host="0.0.0.0",  port=80, debug=True)
     while 1:
         schedule.run_pending()
         time.sleep(1)
