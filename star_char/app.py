@@ -72,7 +72,7 @@ def second():
         return jsonify(dt)
 
 if __name__ == "__main__":
-    app.run( host="0.0.0.0", port = 80, debug=True)
+    app.run( host="0.0.0.0", port = 8080, debug=True)
     while 1:
         schedule.run_pending()
         time.sleep(1)
