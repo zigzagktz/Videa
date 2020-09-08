@@ -20,7 +20,7 @@ schedule.every(60).minutes.do(reset)
 
 @app.route('/')
 def home():
-    return jsonify("for films go to - localhost:8080/films \n for characters go to -localhost:8080/characters")
+    return jsonify("for films go to localhost:8080/films and for characters go to localhost:8080/characters")
 
 
 @app.route("/films", methods=['GET'])
