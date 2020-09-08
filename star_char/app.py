@@ -15,7 +15,6 @@ def reset():
     global counter_two
     counter_one = 0
     counter_two = 0
-
 schedule.every(60).minutes.do(reset) 
 
 @app.route('/')
