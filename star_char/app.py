@@ -10,13 +10,13 @@ app = Flask(__name__)
 counter_one = 0
 counter_two = 0
 
-#def reset():
- #   global counter_one
-  #  global counter_two
-   # counter_one = 0
-    #counter_two = 0
+def reset():
+    global counter_one
+    global counter_two
+    counter_one = 0
+    counter_two = 0
 
-#schedule.every(60).minutes.do(reset) 
+schedule.every(60).minutes.do(reset) 
 
 @app.route('/')
 def home():
@@ -72,7 +72,7 @@ def second():
         return jsonify(dt)
 
 if __name__ == "__main__":
-    app.run( debug=True)
-   # while 1:
-    #    schedule.run_pending()
-     #   time.sleep(1)
+    app.run( host="0.0.0.0", port = 80, debug=True)
+    while 1:
+        schedule.run_pending()
+        time.sleep(1)
