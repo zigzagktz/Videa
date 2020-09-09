@@ -7,10 +7,15 @@ import time
 
 app = Flask(__name__)
 
-counter_one = 0
-counter_two = 0
+counter_one = 0     # to keep counter of films_api
+counter_two = 0     # to keep counter of characters_api
 
 def reset():
+    """
+    in order to reset the counter, this function runs every 1 hour
+    once the counters are reset, the cached value will be deleted
+    and fresh data will be fetched.
+    """
     global counter_one
     global counter_two
     counter_one = 0
@@ -23,7 +28,12 @@ def home():
 
 
 @app.route("/films", methods=['GET'])
-def first():
+def film_api():
+    """ 
+This function calls the backend funciton film_names()
+and then creates a small database which stores the value in json format
+to table films.
+    """
     global counter_one
     conn = sqlite3.connect('starwars.db')
     cur = conn.cursor()
@@ -47,7 +57,11 @@ def first():
         return jsonify(dt)
 
 @app.route("/characters", methods=['GET'])
-def second():
+def characters_api():
+    """
+This function calls the backend function join()
+and stores the value inside the table called characters
+    """
     global counter_two
     counter_two += 1
     conn = sqlite3.connect('starwars.db')
@@ -72,6 +86,7 @@ def second():
 
 if __name__ == "__main__":
     app.run( host="0.0.0.0", port = 8080, debug=True)
-    while 1:
+
+    while True:
         schedule.run_pending()
         time.sleep(1)
