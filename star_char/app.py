@@ -52,7 +52,7 @@ to table films.
         rows = cur.fetchall()
         dt = []
         for i in rows:
-            dt.append(eval(i[0]))
+            dt.append(json.loads(i[0]))
         return jsonify(dt)
 
 @app.route("/characters", methods=['GET'])
@@ -86,7 +86,7 @@ and stores the value inside the table called characters
         rows = cur.fetchall()
         dt = []
         for i in rows:
-            dt.append(eval(i[0]))
+            dt.append(json.loads(i[0]))
         return jsonify(dt)
 
 if __name__ == "__main__":
