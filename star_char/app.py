@@ -7,20 +7,15 @@ import time
 
 app = Flask(__name__)
 
-counter_one = 0     # to keep counter of films_api
-counter_two = 0     # to keep counter of characters_api
+FlagForFilm_isCache = 0         
+FlagForCharacter_isCache = 0    
+timeProgramStarts = time.time()   # setting a timer
 
 def reset():
-    """
-    in order to reset the counter, this function runs every 1 hour
-    once the counters are reset, the cached value will be deleted
-    and fresh data will be fetched.
-    """
-    global counter_one
-    global counter_two
-    counter_one = 0
-    counter_two = 0
-schedule.every(60).minutes.do(reset) 
+    global FlagForCharacter_isCache
+    global FlagForFilm_isCache
+    FlagForFilm_isCache = 0
+    FlagForCharacter_isCache = 0
 
 @app.route('/')
 def home():
@@ -34,11 +29,17 @@ This function calls the backend funciton film_names()
 and then creates a small database which stores the value in json format
 to table films.
     """
-    global counter_one
+    global FlagForFilm_isCache
+    global timeProgramStarts
     conn = sqlite3.connect('starwars.db')
     cur = conn.cursor()
-    counter_one += 1
-    if counter_one == 1:
+    if time.time() - timeProgramStarts > 3600:
+        timeProgramStarts = time.time()   # setting the current time
+        reset()                    # reset flags if 1 hr have passed
+    else:
+        pass
+    if FlagForFilm_isCache == 0:
+        FlagForFilm_isCache = 1   # set flag on
         cur.execute('drop table if exists films')
         cur.execute('CREATE TABLE IF NOT EXISTS films ( data json)')
         for i in backend.film_names():
@@ -47,8 +48,6 @@ to table films.
         conn.close()
         return jsonify(backend.film_names())
     else:
-        conn = sqlite3.connect('starwars.db')
-        cur = conn.cursor()
         cur.execute("SELECT * FROM films")
         rows = cur.fetchall()
         dt = []
@@ -62,11 +61,17 @@ def characters_api():
 This function calls the backend function join()
 and stores the value inside the table called characters
     """
-    global counter_two
-    counter_two += 1
+    global FlagForCharacter_isCache
+    global timeProgramStarts
     conn = sqlite3.connect('starwars.db')
     cur = conn.cursor()
-    if counter_two == 1:
+    if time.time() - timeProgramStarts > 3600:
+        timeProgramStarts = time.time()   # setting the current time 
+        reset()                    # reset flags if 1 hr have passed
+    else:
+        pass
+    if FlagForCharacter_isCache == 0:
+        FlagForCharacter_isCache = 1    # set flag on
         cur.execute('drop table if exists characters')
         cur.execute('CREATE TABLE IF NOT EXISTS characters ( data json)')
         for i in backend.join():
@@ -86,7 +91,3 @@ and stores the value inside the table called characters
 
 if __name__ == "__main__":
     app.run( host="0.0.0.0", port = 8080, debug=True)
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
